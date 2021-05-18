@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<!--
+
+So high
+
+-->
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Под асфальтовым небом</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+
+		<meta property="og:title" content="Под асфальтовым небом">
+		<meta property="og:type" content="website">
+		<meta property="og:url" content="http://dots.band/">
+		<meta property="og:image" content="http://dots.band/assets/bg.jpg">
+
+		<link rel="apple-touch-icon" href="assets/icon/apple-touch-icon.png">
+		<link rel="icon" href="assets/icon/android-icon.png">
+
+		<link rel="stylesheet" href="assets/basscss/bassdock.min.css">
+		<script src="assets/vendor/angular.min.js"></script>
+		
+		<link rel="stylesheet" href="assets/style.css">
+		<link rel="stylesheet" href="assets/responsive.css">
+	</head>
+	<body ng-app="app">
+
+		<main class="pod-asfaltovym-nebom">
+			<section class="dotsband album" data-section-name="album">
+				<article class="cover">
+					<img src="assets/cover.png">
+				</article>
+
+				<article class="comet">
+					<a href="https://youtu.be/7nT84PSDhAc"><span class="telescope"></span></a>
+				</article>
+
+				<video playsinline autoplay muted loop class="video-preview">
+					<source src="assets/video/cover.webm" type="video/webm">
+					<source src="assets/video/cover.mp4" type="video/mp4">
+				</video>
+
+				<aside class="itunes-gplay">
+					<a target="_blank" href="https://music.apple.com/ru/album/pod-asfaltovym-nebom/931037143"><img src="assets/itunes.png"></a>
+					<a target="_blank" href="https://music.youtube.com/browse/MPREb_A8JKa7qpSUJ"><img src="assets/gplay.png"></a>
+				</aside>
+
+				<article class="soundcloud-single">
+					<div plangular="https://soundcloud.com/rustaveli-1-1/band-mary-a"
+					  style="background-image: url(assets/soundcloud/pillarsofcreation.jpeg)"
+					  class="py2 white bg-cover bg-center">
+					  <div class="center py4">
+						<h4 class="caps mb0">{{track.user.username}}</h4>
+						<h3 class="h0 h0-responsive caps m0">{{track.title}}</h3>
+					  </div>
+					  <div class="flex flex-center px2">
+						<button ng-click="playPause()"
+						  title="Play/Pause"
+						  class="flex-none h2 mr2 button button-transparent button-grow rounded">
+						  <svg ng-if="player.playing !== track.src" class="icon geomicon" data-icon="play" viewBox="0 0 32 32" width="32" height="32" style="fill:currentcolor"><path d="M4 4 L28 16 L4 28 z "></path></svg>
+						  <svg ng-if="player.playing === track.src" class="icon geomicon" data-icon="pause" viewBox="0 0 32 32" width="32" height="32" style="fill:currentcolor"><path d="M4 4 H12 V28 H4 z M20 4 H28 V28 H20 z "></path></svg>
+						</button>
+						<div class="flex-auto">
+						  <progress
+							class="progress"
+							ng-click="seek($event)"
+							ng-value="currentTime / duration || 0">
+							{{ currentTime / duration }}
+						  </progress>
+						</div>
+					  </div>
+					</div>
+				</article>
+			</section>
+
+			<section class="dotsband tracks" data-section-name="tracks">
+				<article class="soundcloud-album">
+					<div plangular="https://soundcloud.com/dotsband/sets/pod-asfaltovym-nebom" class="mb3 bg-darken-2 rounded">
+					  <div class="p2">
+						<div class="flex flex-center mb1">
+						  <samp class="right-align flex-auto h6">{{ currentTime | hhmmss }} / {{ duration | hhmmss }}</samp>
+						</div>
+						<div class="flex flex-center">
+						  <button class="flex-none h3 button button-narrow button-transparent button-grow rounded"
+							title="Play Previous Track"
+							ng-click="previous()">
+							<svg class="icon geomicon" data-icon="previous" viewBox="0 0 32 32" style="fill:currentcolor"><path d="M4 4 H8 V14 L28 4 V28 L8 18 V28 H4 z "></path></svg>
+						  </button>
+						  <button class="flex-none h1 button button-transparent button-grow rounded"
+							title="Play/Pause"
+							ng-click="playPause(index)">
+							<svg ng-if="player.playing !== track.src" class="icon geomicon" data-icon="play" viewBox="0 0 32 32" width="32" height="32" style="fill:currentcolor"><path d="M4 4 L28 16 L4 28 z "></path></svg>
+							<svg ng-if="player.playing === track.src" class="icon geomicon" data-icon="pause" viewBox="0 0 32 32" width="32" height="32" style="fill:currentcolor"><path d="M4 4 H12 V28 H4 z M20 4 H28 V28 H20 z "></path></svg>
+						  </button>
+						  <button class="flex-none h3 button mr2 button-narrow button-transparent button-grow rounded"
+							title="Play Next Track"
+							ng-click="next()">
+							<svg class="icon geomicon" data-icon="next" viewBox="0 0 32 32" style="fill:currentcolor"><path d="M4 4 L24 14 V4 H28 V28 H24 V18 L4 28 z "></path></svg>
+						  </button>
+						  <progress
+							class="progress"
+							ng-click="seek($event)"
+							ng-value="currentTime / duration || 0">
+							{{ currentTime / duration }}
+						  </progress>
+						</div>
+					  </div>
+					  <ul class="list-reset">
+						<li ng-repeat="track in tracks | limitTo:9">
+						  <button
+							class="flex flex-center full-width left-align button button-transparent"
+							title="Play {{track.title}}"
+							ng-class="{'is-active': player.playing === track.src }"
+							ng-click="playPause($index)">
+							<span class="flex-auto">
+							  {{track.user.username}} - {{track.title}} &emsp;
+							</span>
+							<span class="h6">
+							  {{ track.duration / 1000 | hhmmss }}
+							</span>
+						  </button>
+						</li>
+					  </ul>
+					</div>
+				</article>
+			</section>
+		</main>
+
+		<script src="assets/js/plangular.min.js"></script>
+		<script>
+		  var app = angular.module('app', ['plangular'])
+			.config(function(plangularConfigProvider){
+			  plangularConfigProvider.clientId = 'aeb5b3f63ac0518f8362010439a77ca1';
+			});
+		</script>
+
+		<script src="assets/js/jquery.min.js"></script>
+		<script>
+		<!--
+		if ($(window).width() >= 1050) {
+			document.write('<script src="assets/js/jquery.scrollify.min.js"><\/script>');
+		}
+		-->
+		</script>
+		<script src="assets/js/scroll.js"></script>
+
+	</body>
+</html>
